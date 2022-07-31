@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <title>Kiki Catch Game</title>
+</head>
+
+<body>
+  <!-- Page Title / Navigation -->
+  <div class="nav">
+    <img src="./images/logo.png" alt="" class="logo-img" />
+    <h1>Kiki Catch Game</h1>
+    <img src="./images/logo.png" alt="" class="logo-img" />
+  </div>
+
+  <!-- Instruction -->
+  <div class="instruction">
+    <h2>Instruction</h2>
+    <ul>
+      <li>Use the left and the right button to move the girl from being hit by the ball.</li>
+      <li>Missing the ball earns you 5 point</li>
+      <li>You have 3 Lives left</li>
+    </ul>
+    <p> All the Best</p>
+  </div>
+
+  <!-- Game Status -->
+  <div id="game-status">
+    <hi>Lives: <span id="lives">3</span></hi>
+    <hi>Score: <span id="score">0</span></hi>
+  </div>
+  <!-- Canvas -->
+  <div id="game-board">
+    <canvas id="canvas" width="auto" height="500px"></canvas>
+  </div>
+
+  <!-- Controls -->
+  <div class="game-intro">
+    <button id="start-button">Start Game</button> <!-- We will use Javascript to chnage disabled from False to True -->
+    <button id="restart-button" disabled>Restart Game </button> <!-- We will use Javascript to change disabled from True to False -->
+    <button id="end-button" disabled>End Game</button>
+  </div>
+
+<!-- 
+  <script type="text/javascript" src="js/index.js"></script> -->
+</body>
+
+</html>
