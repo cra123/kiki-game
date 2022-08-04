@@ -7,9 +7,10 @@ window.onload = () => {
     restartGame();
   };
 
- 
-  const theCanvas = document.getElementById('canvas');
-  const ctx = theCanvas.getContext('2d');
+  // document.getElementById('stop-button').onclick = () => { };
+
+const theCanvas = document.getElementById('canvas');
+const ctx = theCanvas.getContext('2d');
 
   canvas.width = theCanvas.width;
   canvas.height = theCanvas.height;
@@ -27,61 +28,70 @@ window.onload = () => {
   const girlRight = new Image();
   girlRight.src = 'images/girl-right.png';
 
+  //Create player
+  const player = new Image();
+  player.src = 'images/player.png';
+
   //initial speed 
   let positionWidth = 40;
   let reduceCounter = (theCanvas.width-60);
+  let player_x_value = (theCanvas.width/2);
+  let player_y_value = (theCanvas.height/2);
+  let player_width = 60;
+  let player_height = 60;
 
-  
-
-
-  function startGame() {
-  setScene();
-
-  //Draw the ball on the screen
-  ctx.drawImage(ball, positionWidth, theCanvas.height/2, 30, 30);
-  
-  //Draw the fixed Girls
-  fixedGirlsPosition();
-  updateBallPosition();
-      
-  }
-  
-  //Clear the Canvas for next frame update
-  function clearCanvas(){
-    ctx.clearRect(0, 0, theCanvas.width, theCanvas.height);
-  }
-
-  //update ball position
+     //update ball position
   function updateBallPosition(){
     if ((positionWidth) < (theCanvas.width-40)) {
       positionWidth += 10;
-      clearCanvas();
-      fixedGirlsPosition();
       ctx.drawImage(ball, positionWidth, theCanvas.height/2, 30, 30);
       console.log(positionWidth);
       if (positionWidth > (theCanvas.width-60)) {
         reduceCounter = positionWidth;
       }
     }
-
-    // else if (reduceCounter < 0){
-    //   reduceCounter = positionWidth;
-    // }
-
     else {
       reduceCounter -= 10;
-      clearCanvas();
-      fixedGirlsPosition();
       ctx.drawImage(ball, reduceCounter, theCanvas.height/2, 30, 30);
       console.log(reduceCounter);
       if (reduceCounter < 40){
         positionWidth = reduceCounter
       }
     }
-
-    requestAnimationFrame(updateBallPosition);
   }
 
+  function updatePlayerPosition(){
+
+  const playerGirl = new Player(player_x_value,player_y_value,player_width, player_height); 
+  playerGirl.makePlayer();
+    
+  //Move Player
+  document.onkeydown = (e) => {
+    if (e.keyCode === 37) {
+      player_x_value -= 10;
+      playerGirl.makePlayer
+    }
+    else if (e.keyCode === 39) {
+      player_x_value += 10;
+      playerGirl.makePlayer
+    }
+    else if (e.keyCode === 38) {
+      player_y_value -= 10;
+      playerGirl.makePlayer
+    }
+    else if (e.keyCode === 40) {
+      player_y_value += 10;
+      playerGirl.makePlayer
+  }
+  };
+
+    
+  }
+  
+  //Clear the Canvas for next frame update
+  function clearCanvas(){
+    ctx.clearRect(0, 0, theCanvas.width, theCanvas.height);
+  }
 
   //draw fixed girl on the screen
   function fixedGirlsPosition(){
@@ -91,7 +101,41 @@ window.onload = () => {
     ctx.drawImage(girlLeft, (theCanvas.width - 60), theCanvas.height/2, 50, 50)
   }
 
-  
+
+  //Make a player class
+  class Player{
+    constructor(player_x, player_y, width, height){
+      this.player_x = player_x;
+      this.player_y = player_y;
+      this.width = width;
+      this.height = height;
+    }
+    
+    makePlayer(){
+      ctx.drawImage(player, this.player_x, this.player_y, this.width, this.height);
+    }
+
+    movePlayerLeft(){
+        this.player_x -= 10;
+        this.makePlayer();
+      }
+
+    movePlayerRight(){
+        this.player_x += 10;
+        this.makePlayer();
+    }
+
+    movePlayerUp(){
+        this.player_y -= 10;
+        this.makePlayer();
+    }
+
+    movePlayerDown(){
+        this.player_y += 10;
+        this.makePlayer();
+    }
+  }
+
   //Reload window and Clear Cache
   function restartGame(){
     window.location.reload();
@@ -115,4 +159,23 @@ window.onload = () => {
   const instructionDiv = document.getElementsByClassName('instruction');
   instructionDiv[0].style.display = 'none';
   }
+
+  
+  
+
+  function updateGameArea(){
+    clearCanvas();
+    fixedGirlsPosition();
+    updateBallPosition();
+    updatePlayerPosition();
+
+  }
+
+  function startGame() {
+    setScene();
+    // setInterval(updateGameArea, 20)
+    setInterval(updateGameArea,20);
+  }
+
+ 
 };
