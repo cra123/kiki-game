@@ -6,6 +6,9 @@ window.onload = () => {
   document.getElementById('restart-button').onclick = () => {
     restartGame();
   };
+  document.getElementById('end-button').onclick = () => {
+    endGame();
+  };
 
 const theCanvas = document.getElementById('canvas');
 const ctx = theCanvas.getContext('2d');
@@ -43,13 +46,15 @@ const ctx = theCanvas.getContext('2d');
   const player = new Image();
   player.src = 'images/player.png';
 
-  
+  //Define The Positions
   let positionWidth = 40;
   let reduceCounter = (theCanvas.width-60);
   let player_x_value = (theCanvas.width/2);
   let player_y_value = (theCanvas.height/2);
   let player_width = 60;
   let player_height = 60;
+
+  //Define the collusion status
   let collusionStatus = false
 
      //update ball position
@@ -57,7 +62,7 @@ const ctx = theCanvas.getContext('2d');
     if ((positionWidth) < (theCanvas.width-40)) {
       positionWidth += 10;
       ctx.drawImage(ball, positionWidth, theCanvas.height/2, 30, 30);
-      // console.log(positionWidth);
+      
       if (positionWidth > (theCanvas.width-60)) {
         reduceCounter = positionWidth;
         score.innerHTML = parseInt(score.innerHTML) + 5;
@@ -214,7 +219,6 @@ const ctx = theCanvas.getContext('2d');
 
   function startGame() {
     setScene();
-    // setInterval(updateGameArea, 20)
     setInterval(updateGameArea,20);
   }
 
