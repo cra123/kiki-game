@@ -28,22 +28,30 @@ body {
   color: blue;
 }
 
+#game-over-score{
+  display: none;
+  justify-content: center;
+}
+
 #game-status
 {
   display: none;
   font-size: 30px;
   font-family: "Verdana";
   color: green;
-  margin-bottom: 20px;
+  
 }
 
 #game-status > h5{
   margin-left: 30px;
+  margin-bottom: -5px;
+  margin-top: -5px;
 }
 
 #game-board {
   display: none;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 #canvas{
@@ -68,6 +76,16 @@ body {
   border-radius: 5px;
   margin-bottom: 20px;
   margin-top: 20px;
+}
+
+.audio{
+  display: none;
+}
+
+#game-over{
+  display: none;
+  justify-content: center;
+  
 }
 
 

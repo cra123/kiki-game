@@ -7,10 +7,21 @@ window.onload = () => {
     restartGame();
   };
 
-  // document.getElementById('stop-button').onclick = () => { };
-
 const theCanvas = document.getElementById('canvas');
 const ctx = theCanvas.getContext('2d');
+
+  const lives = document.getElementById('lives');
+  const score = document.getElementById('score');
+
+  const startbutton = document.getElementById('start-button');
+  const resetbutton = document.getElementById('restart-button');
+  const endbutton = document.getElementById('end-button');
+  const gameArea = document.getElementById('game-board');
+  const gameStatus = document.getElementById('game-status');
+  const audio = document.getElementById('audio');
+  const gameOver = document.getElementById('game-over');
+  const gameOverScore = document.getElementById('score-over');
+  const gameOverScoreDiv = document.getElementById('game-over-score');
 
   canvas.width = theCanvas.width;
   canvas.height = theCanvas.height;
@@ -32,28 +43,35 @@ const ctx = theCanvas.getContext('2d');
   const player = new Image();
   player.src = 'images/player.png';
 
-  //initial speed 
+  
   let positionWidth = 40;
   let reduceCounter = (theCanvas.width-60);
   let player_x_value = (theCanvas.width/2);
   let player_y_value = (theCanvas.height/2);
   let player_width = 60;
   let player_height = 60;
+  let collusionStatus = false
 
      //update ball position
   function updateBallPosition(){
     if ((positionWidth) < (theCanvas.width-40)) {
       positionWidth += 10;
       ctx.drawImage(ball, positionWidth, theCanvas.height/2, 30, 30);
-      console.log(positionWidth);
+      // console.log(positionWidth);
       if (positionWidth > (theCanvas.width-60)) {
         reduceCounter = positionWidth;
+        score.innerHTML = parseInt(score.innerHTML) + 5;
+        scoreStatus = collusionStatus;
+        if (scoreStatus === true) {
+          lives.innerHTML = parseInt(lives.innerHTML) - 1;
+        }
+        collusionStatus = false;
       }
     }
     else {
       reduceCounter -= 10;
       ctx.drawImage(ball, reduceCounter, theCanvas.height/2, 30, 30);
-      console.log(reduceCounter);
+      // console.log(reduceCounter);
       if (reduceCounter < 40){
         positionWidth = reduceCounter
       }
@@ -142,11 +160,6 @@ const ctx = theCanvas.getContext('2d');
   }
 
   function setScene(){
-  const startbutton = document.getElementById('start-button');
-  const resetbutton = document.getElementById('restart-button');
-  const endbutton = document.getElementById('end-button');
-  const gameArea = document.getElementById('game-board');
-
   startbutton.disabled = true;
   startbutton.style.backgroundColor = 'skyblue';
   resetbutton.disabled = false;
@@ -154,13 +167,40 @@ const ctx = theCanvas.getContext('2d');
   endbutton.disabled = false;
   endbutton.style.backgroundColor = 'red';
   gameArea.style.display = "flex";
+  gameStatus.style.display = "flex";
 
   //Change div display to none
   const instructionDiv = document.getElementsByClassName('instruction');
   instructionDiv[0].style.display = 'none';
+
+  //play music
+  audio.autoplay = true;
+  audio.loop = true;
+  audio.volume = 0.5;
+  audio.load();  
   }
 
-  
+  function checkCollision(){
+    
+      ball_x_value = positionWidth;
+      ball_y_value = theCanvas.height/2;
+      ball_width = 30;
+      ball_height = 30;
+
+      //Check if the ball is colliding with the player
+      if ((ball_x_value + 10) > player_x_value 
+        && (ball_x_value + 10) < (player_x_value + player_width) 
+        && (ball_y_value + 10) > player_y_value 
+        && (ball_y_value + 10)  < (player_y_value + player_height)) {
+        // lives.innerHTML = parseInt(lives.innerHTML) - 1;
+        collusionStatus = true;
+      }
+
+      if (lives.innerHTML == 0) {
+        endGame();
+      }
+
+  }
   
 
   function updateGameArea(){
@@ -168,6 +208,7 @@ const ctx = theCanvas.getContext('2d');
     fixedGirlsPosition();
     updateBallPosition();
     updatePlayerPosition();
+    checkCollision();
 
   }
 
@@ -177,5 +218,28 @@ const ctx = theCanvas.getContext('2d');
     setInterval(updateGameArea,20);
   }
 
+  function endGame(){
+  
+  startbutton.style.display = 'none';
+  resetbutton.disabled = false;
+  resetbutton.style.backgroundColor = 'green';
+  endbutton.disabled = false;
+  endbutton.style.backgroundColor = 'skyblue';
+  gameArea.style.display = "none";
+  gameStatus.style.display = "none";
+  //Change div display to none
+  const instructionDiv = document.getElementsByClassName('instruction');
+  instructionDiv[0].style.display = 'none';
+
+  //Show Score
+  gameOver.style.display = "flex";
+  gameOverScoreDiv.style.display = "flex";
+  gameOverScore.innerHTML = score.innerHTML;
+
+
+  //Stop music
+  audio.pause(); 
+  audio.currentTime = 0; 
+  }
  
 };
